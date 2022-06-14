@@ -85,7 +85,7 @@ else this.frames.val = 0
 
 
   
-  //função para fazer u ataque normal batida simples
+  //função para fazer o ataque normal batida simples
   attack({ attack, recipient }) {
     const tl = gsap.timeline()
 
@@ -108,7 +108,133 @@ else this.frames.val = 0
        gsap.to(healthbar, {
   width: this.health - attack.damage + '%'
 })
-     //fim da função    
+         
+         gsap.to(recipient.position, {
+           x: recipient.position.x + 20,
+           yoyo: true,
+           repeat: 3,
+           duration: 0.08
+         })
+         gsap.to(recipient, {
+           opacity: 0,
+           repeat: 5,
+           yoyo: true,
+           duration: 0.08
+         })
+       }
+     }).to(this.position, {
+       x: this.position.x 
+     })
+    }
+  
+//função para fazer o ataque da bola de fogo
+  attack1({ attack1, recipient }) {
+    const tl = gsap.timeline()
+
+    this.health -= attack1.damage
+    
+    let movementDistance = 20
+    if (this.isEnemy) movementDistance = -20
+
+  let healthbar = '#enemyHealthBar'
+    if (this.isEnemy) healthbar = '#playerHealthBar'
+    
+     tl.to(this.position, {
+       x: this.position.x - movementDistance * 2
+     })
+       .to(this.position, {
+       x: this.position.x + movementDistance * 2,
+       duration: 0.1,
+      //O que faz o inimigo apanhar
+       onComplete: () => { 
+       gsap.to(healthbar, {
+  width: this.health - attack1.damage + '%'
+})
+       
+         gsap.to(recipient.position, {
+           x: recipient.position.x + 20,
+           yoyo: true,
+           repeat: 3,
+           duration: 0.08
+         })
+         gsap.to(recipient, {
+           opacity: 0,
+           repeat: 5,
+           yoyo: true,
+           duration: 0.08
+         })
+       }
+     }).to(this.position, {
+       x: this.position.x 
+     })
+    }
+  
+//função para fazer o ataque forte
+  attack2({ attack2, recipient }) {
+    const tl = gsap.timeline()
+
+    this.health -= attack2.damage
+    
+    let movementDistance = 20
+    if (this.isEnemy) movementDistance = -20
+
+  let healthbar = '#enemyHealthBar'
+    if (this.isEnemy) healthbar = '#playerHealthBar'
+    
+     tl.to(this.position, {
+       x: this.position.x - movementDistance * 2
+     })
+       .to(this.position, {
+       x: this.position.x + movementDistance * 2,
+       duration: 0.1,
+      //O que faz o inimigo apanhar
+       onComplete: () => { 
+       gsap.to(healthbar, {
+  width: this.health - attack2.damage + '%'
+})
+       
+         gsap.to(recipient.position, {
+           x: recipient.position.x + 20,
+           yoyo: true,
+           repeat: 3,
+           duration: 0.08
+         })
+         gsap.to(recipient, {
+           opacity: 0,
+           repeat: 5,
+           yoyo: true,
+           duration: 0.08
+         })
+       }
+     }).to(this.position, {
+       x: this.position.x 
+     })
+    }
+  
+//função para fazer o ataque special
+  attack3({ attack3, recipient }) {
+    const tl = gsap.timeline()
+
+    this.health -= attack3.damage
+    
+    let movementDistance = 20
+    if (this.isEnemy) movementDistance = -20
+
+  let healthbar = '#enemyHealthBar'
+    if (this.isEnemy) healthbar = '#playerHealthBar'
+    
+     tl.to(this.position, {
+       x: this.position.x - movementDistance * 2
+     })
+       .to(this.position, {
+       x: this.position.x + movementDistance * 2,
+       duration: 0.1,
+      //O que faz o inimigo apanhar
+       onComplete: () => { 
+       gsap.to(healthbar, {
+  width: this.health - attack3.damage + '%'
+})
+       
          gsap.to(recipient.position, {
            x: recipient.position.x + 20,
            yoyo: true,
@@ -127,6 +253,4 @@ else this.frames.val = 0
      })
     }
   }
-
-
 

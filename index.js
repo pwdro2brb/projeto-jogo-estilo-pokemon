@@ -440,18 +440,58 @@ function animateBattle(){
   document.querySelector('#userInterface').style.display = 'block' //linha para os campos de batalha aparecer quando a batalha começar
   draggle.draw()
   emby.draw()
- 
+      
 }
 
-document.querySelectorAll('button').forEach(button =>{
-  button.addEventListener('click', () =>{
-    emby.attack({ attack: {
-      name:'ataque1',
+//animateBattle()
+//o evento 'listeners' para os botões de ataque  básico
+document.querySelectorAll('#a').forEach((button) => {
+  button.addEventListener('click', (e) =>{
+  [e.currentTarget.inner]
+      emby.attack({ 
+        attack: { 
+      name:'ataque',
       damage: 10,
-      type:'normal'
-    },
-     recipient: draggle
-   })
+      type:'normal'},
+        recipient: draggle 
+      })
   })
 })
 
+//o evento 'listeners' para os botões de ataque  bola de fogo
+document.querySelectorAll('#b').forEach((button) => {
+  button.addEventListener('click', (e) =>{
+  [e.currentTarget.inner]
+      emby.attack({ 
+        attack: { 
+      name:'ataque1',
+      damage: 15,
+      type:'fire'},
+        recipient: draggle 
+      })
+  })
+})
+document.querySelectorAll('#c').forEach((button) => {
+  button.addEventListener('click', (e) =>{
+  [e.currentTarget.inner]
+      emby.attack({ 
+        attack: { 
+      name:'ataque2',
+      damage: 20,
+      type:'big'},
+        recipient: draggle 
+      })
+  })
+})
+document.querySelectorAll('#d').forEach((button) => {
+  button.addEventListener('click', (e) =>{
+  [e.currentTarget.inner]
+      emby.attack({ 
+        attack: { 
+      name:'ataque3',
+      damage: 25,
+      type:'special'},
+        recipient: draggle 
+      })
+  })
+})
