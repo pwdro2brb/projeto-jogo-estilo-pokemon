@@ -17,7 +17,7 @@ const battleZonesMap = []
 for (let i = 0; i < battleZonesData.length; i += 70){
 battleZonesMap.push(battleZonesData.slice(i, 70 + i))
 }
-console.log(battleZonesMap)
+
 //tamanho da borda
 
 
@@ -69,7 +69,7 @@ battleZonesMap.forEach((row, i) => {
       )
   })
 })
-console.log(battleZones)
+
 //preenche o canvas com o mapa e o personagem
 c.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -392,106 +392,3 @@ window.addEventListener('keyup', (e) => {
   }
 })
 animate();//ativa tudo
-
-const battleBackgroundImage = new Image()
-battleBackgroundImage.src = './img/battleBackground.png'
-const battleBackground = new sprite({
-  position:{
-  x:0,
-  y:0
-  },
-  image: battleBackgroundImage,
-})
-
-const embyImage = new Image()
-embyImage.src = './img/embySprite.png'
-const emby = new sprite({
-  position: {
-    x:280,
-    y:325
-  },
-  image: embyImage,
-  frames:{
-    max: 4,
-    hold: 30
-  },
-  animate: true
-})
-
-const draggleImage = new Image()
-draggleImage.src = './img/draggleSprite.png'
-const draggle = new sprite({
-  position: {
-    x:800,
-    y:100
-  },
-  image: draggleImage,
-  frames:{
-    max: 4,
-    hold: 30
-  },
-  animate: true,
-  isEnemy: true
-})
-
-function animateBattle(){
-  window.requestAnimationFrame(animateBattle)
-  battleBackground.draw()
-  document.querySelector('#userInterface').style.display = 'block' //linha para os campos de batalha aparecer quando a batalha começar
-  draggle.draw()
-  emby.draw()
-      
-}
-
-//animateBattle()
-//o evento 'listeners' para os botões de ataque  básico
-document.querySelectorAll('#a').forEach((button) => {
-  button.addEventListener('click', (e) =>{
-  [e.currentTarget.inner]
-      emby.attack({ 
-        attack: { 
-      name:'ataque',
-      damage: 10,
-      type:'normal'},
-        recipient: draggle 
-      })
-  })
-})
-
-//o evento 'listeners' para os botões de ataque  bola de fogo
-document.querySelectorAll('#b').forEach((button) => {
-  button.addEventListener('click', (e) =>{
-  [e.currentTarget.inner]
-      emby.attack({ 
-        attack: { 
-      name:'ataque1',
-      damage: 15,
-      type:'fire'},
-        recipient: draggle 
-      })
-  })
-})
-document.querySelectorAll('#c').forEach((button) => {
-  button.addEventListener('click', (e) =>{
-  [e.currentTarget.inner]
-      emby.attack({ 
-        attack: { 
-      name:'ataque2',
-      damage: 20,
-      type:'big'},
-        recipient: draggle 
-      })
-  })
-})
-document.querySelectorAll('#d').forEach((button) => {
-  button.addEventListener('click', (e) =>{
-  [e.currentTarget.inner]
-      emby.attack({ 
-        attack: { 
-      name:'ataque3',
-      damage: 25,
-      type:'special'},
-        recipient: draggle 
-      })
-  })
-})
