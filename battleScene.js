@@ -1,8 +1,3 @@
-
-
-
-
-
 const battleBackgroundImage = new Image()
 battleBackgroundImage.src = './img/battleBackground.png'
 const battleBackground = new sprite({
@@ -14,26 +9,30 @@ const battleBackground = new sprite({
 })
 
 
-const emby = new monster(monsters.emby)
-const draggle = new monster(monsters.draggle)
+let emby 
+let draggle 
+let renderedSprites
+let queue
+let battleAnimationId
 
-const renderedSprites = []
-function animateBattle(){
-  window.requestAnimationFrame(animateBattle)
-  battleBackground.draw()
-document.querySelector('#userInterface').style.display = 'block' //linha para os campos de batalha aparecer quando a batalha começar
-  draggle.draw()
-  emby.draw()
-  renderedSprites.forEach((sprite) =>{
-    sprite.draw()
-  })    
-}
+function initBattle() {
 
-animateBattle()
+document.querySelector('#userInterface').style.display = 'block'
 
-const queue = []
-//o evento 'listeners' para os botões de ataque  básico
+document.querySelector('#dialogueBox').style.display = 'none'
 
+document.querySelector('#enemyHealthBar').style.width = '100%'
+
+document.querySelector('#playerHealthBar').style.width = '100%'
+
+  
+  document.querySelector
+  draggle = new monster(monsters.draggle)
+  emby = new monster(monsters.emby)
+  renderedSprites = []
+  queue = []
+  battleBackground
+  //o evento 'listeners' para os botões de ataque  básico
 document.querySelectorAll('#a').forEach((button) => {
   button.addEventListener('click', () =>{
     
@@ -43,10 +42,51 @@ document.querySelectorAll('#a').forEach((button) => {
         attack: { 
       name:'Ataque fraco',
       damage: 10,
-      type:'normal'},
+      type:'Normal'},
         recipient: draggle
       })
-   
+    
+if (draggle.health <= 0) {
+      queue.push(() => {
+        draggle.faint()
+      })
+ queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+            battle.initiated = false
+          }
+        })
+      })
+      return
+    }else if (emby.health <= 0) {
+      queue.push(() => {
+        emby.faint()
+      })
+      queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+      return
+     }
     if (randomAttack == 1){
     //o que o inimigo faz após o ataque
     queue.push(() => {
@@ -93,7 +133,12 @@ queue.push(() => {
       })
     })     
 }
+
+
     
+  })
+  button.addEventListener('mouseenter', () => {//dialogo explicando o que o ataque faz
+    document.querySelector('#attackType').innerHTML = '<h1> Ataque do tipo normal </h1>' 
   })
 })
 
@@ -107,9 +152,52 @@ document.querySelectorAll('#b').forEach((button) => {
       attack1: { 
       name:'Bola de fogo',
       damage: 15,
-      type:'fire'},
+      type:'Fogo'},
         recipient: draggle
       })
+
+ if (draggle.health <= 0) {
+      queue.push(() => {
+        draggle.faint()
+      })
+     queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+     return 
+ }else if (emby.health <= 0) {
+      queue.push(() => {
+        emby.faint()
+      })
+      queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+      return
+     }
+    
     if (randomAttack == 1){
     //o que o inimigo faz após o ataque
     queue.push(() => {
@@ -120,7 +208,9 @@ document.querySelectorAll('#b').forEach((button) => {
       type:'normal'},
         recipient: emby
       })
+      
     })
+      
 } else if(randomAttack == 2){
      //o que o inimigo faz após o ataque
 queue.push(() => {
@@ -132,6 +222,7 @@ queue.push(() => {
         recipient: emby,
         renderedSprites
       })
+  
     }) 
 } else if(randomAttack == 3){
     //o que o inimigo faz após o ataque
@@ -143,7 +234,8 @@ queue.push(() => {
       type:'big'},
         recipient: emby
       })
-    })   
+ 
+  })   
 }else if(randomAttack == 4){
    queue.push(() => {
       draggle.attack3({
@@ -154,10 +246,19 @@ queue.push(() => {
         recipient: emby,
         renderedSprites
       })
+     
     })     
 }
+ 
+
+  })
+      button.addEventListener('mouseenter', () => {//dialogo explicando o que o ataque faz
+    document.querySelector('#attackType').innerHTML = '<h1> Ataque do tipo fogo </h1>'
+  
   })
 })
+
+//o evento 'listeners' para o botão de ataque "Batidão"
 document.querySelectorAll('#c').forEach((button) => {
   button.addEventListener('click', () =>{
     
@@ -167,9 +268,51 @@ document.querySelectorAll('#c').forEach((button) => {
         attack2: { 
       name:'Ataque forte',
       damage: 20,
-      type:'big'},
+      type:'Forte'},
         recipient: draggle
       })
+
+    if (draggle.health <= 0) {
+      queue.push(() => {
+        draggle.faint()
+      })
+      queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+      return
+    } else if (emby.health <= 0) {
+      queue.push(() => {
+        emby.faint()
+      })
+      queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+      return
+     }
     if (randomAttack == 1){
     //o que o inimigo faz após o ataque
     queue.push(() => {
@@ -180,6 +323,7 @@ document.querySelectorAll('#c').forEach((button) => {
       type:'normal'},
         recipient: emby
       })
+     
     })
 } else if(randomAttack == 2){
      //o que o inimigo faz após o ataque
@@ -192,6 +336,7 @@ queue.push(() => {
         recipient: emby,
         renderedSprites
       })
+  
     }) 
 } else if(randomAttack == 3){
     //o que o inimigo faz após o ataque
@@ -203,6 +348,7 @@ queue.push(() => {
       type:'big'},
         recipient: emby
       })
+  
     })   
 }else if(randomAttack == 4){
    queue.push(() => {
@@ -214,10 +360,20 @@ queue.push(() => {
         recipient: emby,
         renderedSprites
       })
+     
     })     
 }
+    
+ 
+
+  })
+      button.addEventListener('mouseenter', () => {//dialogo explicando o que o ataque faz
+    document.querySelector('#attackType').innerHTML = '<h1>Ataque do tipo Forte </h1>'
+    
   })
 })
+
+//o evento 'listeners' para o botão de ataque "especial"
 document.querySelectorAll('#d').forEach((button) => {
   button.addEventListener('click', () =>{
     
@@ -231,6 +387,49 @@ document.querySelectorAll('#d').forEach((button) => {
         recipient: draggle,
         renderedSprites
       })
+    
+if (draggle.health <= 0) {
+      queue.push(() => {
+        draggle.faint()
+      })
+      queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+      return
+    }else if (emby.health <= 0) {
+      queue.push(() => {
+        emby.faint()
+      })
+      queue.push(() => {
+        //voltar ao mapa
+        gsap.to('#overlappingDiv', {
+          opacity: 1,
+          onComplete: () => {
+            cancelAnimationFrame(battleAnimationId)
+            document.querySelector('#userInterface').style.display = 'none'//linha para os campos de batalha não aparecer no mapa
+            animate()
+            gsap.to('#overlappingDiv', {
+              opacity: 0
+            })
+             battle.initiated = false
+          }
+        })
+      })
+      return
+     }
+    
     if (randomAttack == 1){
     //o que o inimigo faz após o ataque
     queue.push(() => {
@@ -241,6 +440,7 @@ document.querySelectorAll('#d').forEach((button) => {
       type:'normal'},
         recipient: emby
       })
+     
     })
 } else if(randomAttack == 2){
      //o que o inimigo faz após o ataque
@@ -253,6 +453,7 @@ queue.push(() => {
         recipient: emby,
         renderedSprites
       })
+ 
     }) 
 } else if(randomAttack == 3){
     //o que o inimigo faz após o ataque
@@ -264,6 +465,7 @@ queue.push(() => {
       type:'big'},
         recipient: emby
       })
+  
     })   
 }else if(randomAttack == 4){
    queue.push(() => {
@@ -275,10 +477,36 @@ queue.push(() => {
         recipient: emby,
         renderedSprites
       })
+    
     })     
 }
+   
+
+  })
+      button.addEventListener('mouseenter', () => {//dialogo explicando o que o ataque faz
+    document.querySelector('#attackType').innerHTML = '<h1> Ataque do tipo especial </h1>'
+  
   })
 })
+
+}
+
+function animateBattle(){
+battleAnimationId = window.requestAnimationFrame(animateBattle)
+  battleBackground.draw()
+  
+  draggle.draw()
+  emby.draw()
+  
+  renderedSprites.forEach((sprite) =>{
+    sprite.draw()
+  })    
+}
+//initBattle()
+//animateBattle()
+
+
+
 //lógica abaixo para fazer o inimigo atacar
 document.querySelector('#dialogueBox').addEventListener('click', (e) => {
   if (queue.length > 0) {

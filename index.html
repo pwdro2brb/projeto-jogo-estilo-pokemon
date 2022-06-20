@@ -22,7 +22,8 @@
         bottom: 0; 
         left: 0; 
         opacity: 0;
-        pointer-events: none;"></div> 
+        pointer-events: none;
+        z-index: 10;"></div> 
       <canvas></canvas> 
       <div id="userInterface">
         <!--Representa a barra de vida do inimigo--> 
@@ -117,7 +118,7 @@
             justify-content: center;
             width:33.33%; 
             border-left: 4px solid black"> 
-            <h1>Tipo de ataque</h1> 
+            <h1 id="attackType">Tipo de ataque</h1> 
           </div> 
         </div>
       </div>

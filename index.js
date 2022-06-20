@@ -206,7 +206,7 @@ Math.max(player.position.y, battleZone.position.y)
         window.cancelAnimationFrame(animationId)
         gsap.to('#overlappingDiv', {
   opacity: 1,
-  repeat: 3,
+  repeat: 2,
   yoyo: true,
   duration: 0.4,
           onComplete() {
@@ -214,6 +214,7 @@ Math.max(player.position.y, battleZone.position.y)
             opacity: 1,
             duration:0.4,
               onComplete() {
+                initBattle()
               animateBattle()
               gsap.to('#overlappingDiv',{
                 opacity: 0,

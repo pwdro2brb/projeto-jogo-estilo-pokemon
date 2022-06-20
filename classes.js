@@ -107,6 +107,16 @@ class monster extends sprite {
     this.name = name
      this.attacks = attacks
    }
+
+  faint() {
+    document.querySelector('#dialogueBox').innerHTML = this.name + " desmaiou!!!"
+    gsap.to(this.position,{
+      y: this.position.y + 20
+    })
+    gsap.to(this, {
+      opacity: 0
+    })
+  }
   
   //função para fazer o ataque normal batida simples
   attack({ attack, recipient }) {
@@ -118,7 +128,7 @@ class monster extends sprite {
     
     const tl = gsap.timeline()
 
-    this.health -= attack.damage
+    recipient.health -= attack.damage
     
     let movementDistance = 20
     if (this.isEnemy) movementDistance = -20
@@ -134,7 +144,7 @@ class monster extends sprite {
       //O que faz o inimigo apanhar
        onComplete: () => { 
        gsap.to(healthbar, {
-  width: this.health - attack.damage + '%'
+  width: recipient.health - attack.damage + '%'
 })
          
          gsap.to(recipient.position, {
@@ -164,7 +174,7 @@ document.querySelector('#dialogueBox').style.display = 'block'
     let healthbar = '#enemyHealthBar'
     if (this.isEnemy) healthbar = '#playerHealthBar'
 
-this.health -= attack1.damage
+recipient.health -= attack1.damage
 
     const fireballImage = new Image()//constante para chamar a bola de fogo
     fireballImage.src = './img/fireball.png'
@@ -189,7 +199,7 @@ this.health -= attack1.damage
       onComplete: () => { 
         //O que faz o inimigo apanhar
         gsap.to(healthbar, {
-  width: this.health - attack1.damage + '%'
+  width: recipient.health - attack1.damage + '%'
 })
        
          gsap.to(recipient.position, {
@@ -236,10 +246,10 @@ document.querySelector('#dialogueBox').style.display = 'block'
     
     let healthbar = '#enemyHealthBar'
     if (this.isEnemy) healthbar = '#playerHealthBar'
-    
-    const tl = gsap.timeline()
 
-    this.health -= attack2.damage
+        recipient.health -= attack2.damage
+
+    const tl = gsap.timeline()
     
     let movementDistance = 200
     if (this.isEnemy) movementDistance = -200
@@ -255,7 +265,7 @@ document.querySelector('#dialogueBox').style.display = 'block'
       //O que faz o inimigo apanhar
        onComplete: () => { 
        gsap.to(healthbar, {
-  width: this.health - attack2.damage + '%'
+  width: recipient.health - attack2.damage + '%'
 })
        
          gsap.to(recipient.position, {
@@ -285,6 +295,8 @@ document.querySelector('#dialogueBox').style.display = 'block'
         let healthbar = '#enemyHealthBar'
     if (this.isEnemy) healthbar = '#playerHealthBar'
 
+    recipient.health -= attack3.damage
+    
 const specialImage = new Image()//constante para chamar a imagem da bola de fogo
     specialImage.src = './img/Special attack1.png'
     const special = new sprite({//constante que anima e bota a bola de fogo
@@ -311,7 +323,7 @@ const specialImage = new Image()//constante para chamar a imagem da bola de fogo
           
         //O que faz o inimigo apanhar
         gsap.to(healthbar, {
-  width: this.health - attack3.damage + '%'
+  width: recipient.health - attack3.damage + '%'
 })
 
          gsap.to(recipient.position, {
@@ -334,7 +346,7 @@ const specialImage = new Image()//constante para chamar a imagem da bola de fogo
      
     const tl = gsap.timeline()
 
-    this.health -= attack3.damage
+    
     
     let movementDistance = 0
     if (this.isEnemy) movementDistance = 0
